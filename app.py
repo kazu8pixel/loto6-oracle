@@ -464,11 +464,31 @@ REQUIRED_COLS = ["開催回", "日付"] + COLS_NUMBERS + [BONUS_COL]
 
 @st.cache_data(show_spinner=False)
 def load_and_validate(file_bytes: bytes, filename: str) -> pd.DataFrame:
-    df = pd.read_csv(pd.io.common.BytesIO(file_bytes), encoding="utf-8-sig")
+    # ── エンコーディング自動判定
+    df = None
+    for enc in ["utf-8-sig", "utf-8", "shift_jis", "cp932", "euc-jp"]:
+        try:
+            df = pd.read_csv(pd.io.common.BytesIO(file_bytes), encoding=enc)
+            break
+        except (UnicodeDecodeError, Exception):
+            continue
+    if df is None:
+        raise ValueError("CSVのエンコーディングを判定できませんでした。UTF-8またはShift-JISで保存してください。")
+
+    # ── 列名の正規化（前後空白・BONUS数字 → ボーナス数字）
     df.columns = df.columns.str.strip()
-    missing = [c for c in REQUIRED_COLS if c not in df.columns]
+    df = df.rename(columns={"BONUS数字": "ボーナス数字", "bonus数字": "ボーナス数字"})
+
+    # ── 必須列チェック（ボーナス数字は任意扱いに緩和）
+    must = ["開催回"] + COLS_NUMBERS
+    missing = [c for c in must if c not in df.columns]
     if missing:
         raise ValueError(f"以下の列が見つかりません: {missing}")
+
+    # ── ボーナス数字列がなければ 0 で補完
+    if BONUS_COL not in df.columns:
+        df[BONUS_COL] = 0
+
     for c in COLS_NUMBERS + [BONUS_COL]:
         df[c] = pd.to_numeric(df[c], errors="coerce")
     df = df.dropna(subset=COLS_NUMBERS).copy()

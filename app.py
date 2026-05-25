@@ -581,8 +581,8 @@ PLOTLY_LAYOUT = dict(
     plot_bgcolor="rgba(0,0,0,0)",
     font=dict(family="Inter, Rajdhani, sans-serif", color="#94a3b8"),
     margin=dict(l=4, r=4, t=36, b=4),
-    xaxis=dict(gridcolor="#1e3a5f44", zerolinecolor="#1e3a5f44"),
-    yaxis=dict(gridcolor="#1e3a5f44", zerolinecolor="#1e3a5f44"),
+    xaxis=dict(gridcolor="rgba(30,58,95,0.27)", zerolinecolor="rgba(30,58,95,0.27)"),
+    yaxis=dict(gridcolor="rgba(30,58,95,0.27)", zerolinecolor="rgba(30,58,95,0.27)"),
 )
 
 COLORSCALE = [[0.0,"#1e3a5f"],[0.3,"#1d4ed8"],[0.6,"#38bdf8"],[1.0,"#e879f9"]]

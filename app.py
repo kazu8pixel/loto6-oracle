@@ -742,8 +742,8 @@ with tab1:
             title=dict(text="数字別出現回数（1〜43）", font=dict(color="#94a3b8", size=12)),
             height=280,
             bargap=0.12,
-            xaxis=dict(tickmode="linear", tick0=1, dtick=2, **PLOTLY_LAYOUT["xaxis"]),
         )
+        fig_freq.update_xaxes(tickmode="linear", tick0=1, dtick=2)
         st.plotly_chart(fig_freq, use_container_width=True)
 
         # ── ヒートマップ
@@ -810,9 +810,9 @@ with tab1:
             **PLOTLY_LAYOUT,
             title=dict(text=f"ひっぱり個数分布  （全体発生率: {carry_rate}%）", font=dict(color="#94a3b8", size=12)),
             height=240,
-            xaxis=dict(title="ひっぱり個数", dtick=1, **PLOTLY_LAYOUT["xaxis"]),
-            yaxis=dict(title="開催回数", **PLOTLY_LAYOUT["yaxis"]),
         )
+        fig_carry.update_xaxes(title_text="ひっぱり個数", dtick=1)
+        fig_carry.update_yaxes(title_text="開催回数")
         st.plotly_chart(fig_carry, use_container_width=True)
 
         with st.expander("📋 読み込みデータプレビュー（最新20件）"):

@@ -760,8 +760,9 @@ with tab1:
             **PLOTLY_LAYOUT,
             title=dict(text="出現頻度ヒートマップ（濃いほど高頻度）", font=dict(color="#94a3b8", size=12)),
             height=220,
-            xaxis=dict(showticklabels=False), yaxis=dict(showticklabels=False),
         )
+        fig_heat.update_xaxes(showticklabels=False)
+        fig_heat.update_yaxes(showticklabels=False)
         st.plotly_chart(fig_heat, use_container_width=True)
 
         # ── ペア相性
